@@ -10,7 +10,8 @@ FONT = cv2.FONT_HERSHEY_SIMPLEX
 
 # Caminho do vídeo e tipo de background subtractor (requer opencv-contrib se usar GMG/MOG)
 VIDEO_SOURCE = "video/video_animal.mp4"
-BGS_TYPES = "GMG"
+BGS_TYPES = ["GMG", "MOG", "MOG2", "KNN", "CNT"]
+BGS_TYPES = BGS_TYPES[0]
 
 def getKernerl(KERNEL_TYPE):
     # Retorna kernels para operações morfológicas:
@@ -62,6 +63,16 @@ if not cap.isOpened():
 # Instancia o subtractor escolhido
 bg_subtractor = getBGSubtractor(BGS_TYPES)
 
+
+#controla somente o tamanho das janelas de exibição
+cv2.namedWindow("Frame", cv2.WINDOW_NORMAL)
+cv2.namedWindow("BG Mask", cv2.WINDOW_NORMAL)
+cv2.resizeWindow("Frame", 800, 450)    # ajuste o tamanho aqui
+cv2.resizeWindow("BG Mask", 800, 450)
+cv2.moveWindow("Frame", 50, 50)        # opcional: posição das janelas
+cv2.moveWindow("BG Mask", 900, 50)
+
+
 def main():
     while cap.isOpened():
         ok, frame = cap.read()
@@ -93,20 +104,20 @@ def main():
                 cv2.rectangle(frame, (10, 30), (250,55), (255, 0, 0), -1)
                 cv2.putText(frame, 'Movimento detectado', (10,50), FONT, 1, TEXT_COLOR, 2, cv2.LINE_AA)
 
-                # Alternativas visuais (descomente o que quiser ver/testar):
-                # cv2.drawContours(frame, cnt, -1, TEXT_COLOR, 3)
-                # cv2.drawContours(frame, cnt, -1, (255, 255, 255), 1)
-                # cv2.rectangle(frame, (x, y), (x + w, y + h), TRACKER_COLOR, 3)
-                # cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 1)
+                #Alternativas visuais (descomente o que quiser ver/testar):
+                cv2.drawContours(frame, cnt, -1, TEXT_COLOR, 3)
+                cv2.drawContours(frame, cnt, -1, (255, 255, 255), 1)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), TRACKER_COLOR, 3)
+                cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 255), 1)
 
                 # Sobreposições com transparência para destacar a região
                 # (ideia inspirada em PyImageSearch)
-                for alpha in np.arange(0.8, 1.1, 0.9)[::-1]:
-                    frame_copy = frame.copy()
+                #for alpha in np.arange(0.8, 1.1, 0.9)[::-1]:
+                    #frame_copy = frame.copy()
                     # ATENÇÃO: frame_copy é uma imagem (np.array), não é função.
-                    output = frame.copy()
-                    cv2.drawContours(frame_copy, [cnt], -1, TRACKER_COLOR, -1)
-                    frame = cv2.addWeighted(frame_copy, alpha, output, 1-alpha, 0, output)
+                    #output = frame.copy()
+                    #cv2.drawContours(frame_copy, [cnt], -1, TRACKER_COLOR, -1)
+                    #frame = cv2.addWeighted(frame_copy, alpha, output, 1-alpha, 0, output)
 
         # Combina frame original com máscara (útil para visualização do que foi mantido)
         result = cv2.bitwise_and(frame, frame, mask=bg_mask)
