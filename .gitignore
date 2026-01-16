@@ -1,0 +1,45 @@
+
+# Ignorar pasta de vídeos
+video/
+
+# Ignorar arquivos de vídeo por garantia
+*.mp4
+*.avi
+*.mov
+*.mkv
+*.wmv
+
+# ----------------------
+# IGNORAR AMBIENTE PYTHON
+# ----------------------
+
+# Ambiente virtual
+venv/
+env/
+
+# Cache e artefatos Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+
+# Arquivos de build
+build/
+dist/
+*.egg-info/
+
+# Logs
+*.log
+
+# Configurações locais
+.idea/
+.vscode/
+
+# Arquivos temporários do sistema
+.DS_Store
+Thumbs.db
+
+# Arquivos de testes
+.pytest_cache/
+.coverage
