@@ -1,4 +1,3 @@
-
 import numpy as np
 import cv2
 import sys
@@ -18,11 +17,13 @@ def getKernerl(KERNEL_TYPE):
     # - dilation: estrutura elíptica (melhor para crescer regiões)
     # - opening/closing: quadrado 3x3 de uns (remoção de ruído/fechamento de buracos)
     if KERNEL_TYPE == "dilation":
-        return cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
+        kernel =  cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
     if KERNEL_TYPE == "opening":
-        return np.ones((3, 3), np.uint8)
+        kernel =  np.ones((3, 3), np.uint8)
     if KERNEL_TYPE == "closing":
-        return np.ones((3, 3), np.uint8)
+        kernel =  np.ones((3, 3), np.uint8)
+
+    return kernel
 
 def getFilter(img, filter):
     # Encadeia filtros morfológicos para limpar a máscara de fundo
